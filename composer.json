@@ -1,0 +1,21 @@
+{
+    "name": "jayson755/loid-module-lbb",
+    "description": "lbb管理模块",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jiangx",
+            "email": "jiang7552261@163.com"
+        }
+    ],
+    "minimum-stability":"dev",
+    "require": {
+        "jayson755/loid-frame":"^1.0"
+    },
+    "autoload":{
+        "psr-4": {
+            "Loid\\Module\\Lbb\\": "src/"
+        }
+    }
+}
