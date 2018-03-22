@@ -11,6 +11,7 @@
     ],
     "minimum-stability":"dev",
     "require": {
+		"ramsey/uuid": "^3.7",
         "jayson755/loid-frame":"^1.0"
     },
     "autoload":{

@@ -3,6 +3,7 @@ namespace Loid\Module\Lbb\Logic;
 
 use Loid\Module\Lbb\Model\LbbUser;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Uuid;
 use Validator;
 
 class User{
@@ -44,6 +45,7 @@ class User{
         $model->lbb_user_pwd = $this->setPassword($params['user_pwd']);
         $model->lbb_user_paypwd = $this->setPassword($params['user_paypwd']);
         $model->lbb_user_origin = $params['user_origin'] ?? '';
+        $model->lbb_user_uuid = Uuid::uuid1()->toString();
         $model->save();
         return $model->lbb_user_id;
     }

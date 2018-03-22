@@ -36,4 +36,15 @@ Route::group(['prefix'=>'store', 'middleware'=>[\Illuminate\Session\Middleware\S
     
     /* 充值 */
     Route::post('recharge.html', Loid\Module\Lbb\Api\Store::class . '@recharge');
+    
+    /* 购买理财产品 */
+    Route::post('buy/financial.html', Loid\Module\Lbb\Api\Financial::class . '@buy');
+});
+
+Route::group(['prefix'=>'financial', 'middleware'=>[\Illuminate\Session\Middleware\StartSession::class, \Loid\Module\Lbb\Middleware\Authentication::class]], function () {
+    /* 购买理财产品 */
+    Route::post('buy.html', Loid\Module\Lbb\Api\Financial::class . '@buy');
+    
+    /* 我的理财产品 */
+    Route::post('my.html', Loid\Module\Lbb\Api\Financial::class . '@my');
 });

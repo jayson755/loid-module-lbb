@@ -20,17 +20,19 @@ return [
             'label' => 'Lbb管理',
             'icon'  => 'fa-file',
             'menu'  => array(
-                array('label' => 'Lbb用户管理','display'=>true, 'alias' => 'lbb.user', 'method' => 'get'),
+                array('label' => '用户管理','display'=>true, 'alias' => 'lbb.user', 'method' => 'get'),
                 
-                array('label' => 'Lbb仓库管理','display'=>true, 'alias' => 'lbb.store', 'method' => 'get'),
+                array('label' => '仓库管理','display'=>true, 'alias' => 'lbb.store', 'method' => 'get'),
                 
-                array('label' => 'Lbb提现管理','display'=>true, 'alias' => 'lbb.store.withdrawing', 'method' => 'get'),
+                array('label' => '提现管理','display'=>true, 'alias' => 'lbb.store.withdrawing', 'method' => 'get'),
                 
-                array('label' => 'Lbb充值管理','display'=>true, 'alias' => 'lbb.store.recharge', 'method' => 'get'),
+                array('label' => '充值管理','display'=>true, 'alias' => 'lbb.store.recharge', 'method' => 'get'),
                 
-                array('label' => 'Lbb币种分类管理','display'=>true, 'alias' => 'lbb.category', 'method' => 'get'),
+                array('label' => '币种分类管理','display'=>true, 'alias' => 'lbb.category', 'method' => 'get'),
                 
-                array('label' => 'Lbb理财管理','display'=>true, 'alias' => 'lbb.financial', 'method' => 'get'),
+                array('label' => '理财产品管理','display'=>true, 'alias' => 'lbb.financial', 'method' => 'get'),
+                
+                array('label' => '用户理财管理','display'=>true, 'alias' => 'lbb.user.financial', 'method' => 'get'),
             ),
             
         ],

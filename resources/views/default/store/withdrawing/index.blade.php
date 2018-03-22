@@ -88,7 +88,7 @@ $(document).ready(function() {
                 var rowData = $("#table_list_2").jqGrid("getRowData", id);
 				console.log(rowData);
                 if (rowData.withdraw_status == 1) {
-					window.top._toastr('该充值申请已处理!', 'error', '错误提示');return false;
+					window.top._toastr('该提现申请已处理!', 'error', '错误提示');return false;
                 }
 				
 				layer.confirm('确定要处理该条申请吗？', {btn : [ '确定', '取消' ]}, function(index) {
