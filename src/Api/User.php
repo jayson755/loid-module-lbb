@@ -37,4 +37,16 @@ class User extends Controller{
         }
         return response()->json(['status'=>1,'msg'=>'验证成功']);
     }
+    
+    /**
+     * 用户的推广用户
+     */
+    public function promote(Request $request, int $user_id){
+        try {
+            $list = (new UserLogic)->getUserPromote($user_id);
+        } catch (\Exception $e) {
+            return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
+        }
+        return response()->json(['status'=>1,'msg'=>'', 'data'=>['userlist'=>$list->toArray()]]);
+    }
 }

@@ -51,7 +51,7 @@ class Category{
         return $model->category_id;
     }
     
-    public function getCategory(string $type = '', array $field_alias = []){
+    public function getCategoryList(string $type = '', array $field_alias = []){
         if (!$field_alias) {
             $field_alias = ['category_id', 'category_name'];
         }
@@ -60,5 +60,9 @@ class Category{
         } else {
             return CategoryModel::where('category_status', 'on')->select($field_alias)->get();
         }
+    }
+    
+    public function getCategory(int $category_id){
+        return CategoryModel::find($category_id);
     }
 }

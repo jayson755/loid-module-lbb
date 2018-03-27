@@ -13,7 +13,7 @@ class FinancialController extends Controller{
    
     public function index(){
         return $this->view("{$this->view_prefix}/financial/index", [
-            'categoryJson'=>(new CategoryLogic)->getCategory('on', ['category_id as id', 'category_name as title'])->toJson(),
+            'categoryJson'=>(new CategoryLogic)->getCategoryList('on', ['category_id as id', 'category_name as title'])->toJson(),
             'limitJson' => json_encode(array_column(config('business.financial_limit'), 'date', 'index')),
         ]);
     }

@@ -10,47 +10,6 @@ use Loid\Module\Lbb\Logic\Category as CategoryLogic;
 
 
 class Store extends Controller{
-    
-    /**
-     * 获取用户库存
-     */
-    public function getStoreByUser(Request $request){
-        try {
-            $category = (new CategoryLogic)->getCategory('on');
-            $list = (new StoreLogic)->getStoreByUser($request->user, ['store_category', 'store_num']);
-            foreach ($list as $val) {
-                $val->category = $val->category;
-            }
-            $store = $list->toArray();
-            foreach ($store as &$item) {
-                $item['recharge'] = false;
-            }
-            foreach ($category as $val) {
-                $ishave = false;
-                foreach ($store as  $k => $v) {
-                    if ($val->category_id == $v['store_category']) {
-                        $store[$k]['recharge'] = true;
-                        $ishave = true;
-                        break;
-                    }
-                }
-                if (false === $ishave) {
-                    $store[] = [
-                        'recharge' => false,
-                        'store_category' => $val->category_id,
-                        'store_num' => 0,
-                        'category' => [
-                            'category_name' => $val->category_name
-                        ]
-                    ];
-                }
-            }
-        } catch (\Exception $e) {
-            return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
-        }
-        return response()->json(['status'=>1,'msg'=>'', 'data'=>$store]);
-    }
-    
     /**
      * 提现
      */

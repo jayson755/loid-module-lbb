@@ -9,6 +9,21 @@ use Validator;
 class User{
     
     /**
+     * 获取用户树形
+     */
+    public function getUserPromote(int $userId){
+        return LbbUser::where('lbb_user_origin', $userId)->select('lbb_user_id as id','lbb_user_account as name')->get();
+    }
+    
+    /**
+     * 获取用户树形
+     */
+    public function getUserTree(int $userId){
+        $list = LbbUser::where('lbb_user_origin', '>', 0)->select('lbb_user_id as id','lbb_user_origin as origin','lbb_user_account as name')->get()->toArray();
+        return (new \Loid\Frame\Support\Tree($list, ['id', 'origin']))->leaf($userId);
+    }
+    
+    /**
      * 添加用户
      * @param array $params 数据
      *
@@ -16,13 +31,14 @@ class User{
      */
     public function add(array $params) :int {
         $validator = Validator::make($params, [
-            'user_account' => 'required|size:11|unique:lbb_user,lbb_user_account',
+            'user_account' => 'required|min:6|max:20|unique:lbb_user,lbb_user_account',
             'user_mobile' => 'required|size:11',
             'user_pwd' => 'required|min:6|max:20',
             'user_paypwd' => 'required|min:6|max:20',
         ],[
             'user_account.required' => '用户名必须',
-            'user_account.size' => '用户名必须为手机号',
+            'user_account.min' => '用户名必须为6-20个字符',
+            'user_account.max' => '用户名必须为6-20个字符',
             'user_account.unique' => '用户名已存在',
             'user_mobile.required' => '预留手机号必须',
             'user_mobile.size' => '预留手机号错误',
@@ -37,14 +53,16 @@ class User{
         if ($validator->fails()) {
             throw new \Exception($validator->errors()->first());
         }
-        
+        if (base64_decode($params['user_origin'])) {
+            $origin_user_id = LbbUser::where('lbb_user_uuid', base64_decode($params['user_origin']))->value('lbb_user_id');
+        }
         $model = new LbbUser;
         $model->lbb_user_account = $params['user_account'];
         $model->lbb_user_name = $params['user_name'] ?? '';
         $model->lbb_user_mobile = $params['user_mobile'];
         $model->lbb_user_pwd = $this->setPassword($params['user_pwd']);
         $model->lbb_user_paypwd = $this->setPassword($params['user_paypwd']);
-        $model->lbb_user_origin = $params['user_origin'] ?? '';
+        $model->lbb_user_origin = $origin_user_id ?? 0;
         $model->lbb_user_uuid = Uuid::uuid1()->toString();
         $model->save();
         return $model->lbb_user_id;

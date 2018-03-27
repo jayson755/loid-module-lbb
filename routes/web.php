@@ -14,6 +14,10 @@ Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Midd
     Route::get('lbb/store', Loid\Module\Lbb\Controllers\StoreController::class.'@index')->name('lbb.store');
     Route::get('lbb/store/list/{param}', Loid\Module\Lbb\Controllers\StoreController::class . '@getjQGridList')->name('lbb.store.list');
     
+    /*仓库日志记录*/
+    Route::get('lbb/store/log', Loid\Module\Lbb\Controllers\StoreLogController::class.'@index')->name('lbb.store.log');
+    Route::get('lbb/store/log/list/{param}', Loid\Module\Lbb\Controllers\StoreLogController::class . '@getjQGridList')->name('lbb.store.log.list');
+    
     /*充值管理*/
     Route::get('lbb/store/recharge', Loid\Module\Lbb\Controllers\StoreRechargeController::class.'@index')->name('lbb.store.recharge');
     Route::get('lbb/store/recharge/list/{param}', Loid\Module\Lbb\Controllers\StoreRechargeController::class . '@getjQGridList')->name('lbb.store.recharge.list');

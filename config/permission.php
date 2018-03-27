@@ -24,6 +24,8 @@ return [
                 
                 array('label' => '仓库管理','display'=>true, 'alias' => 'lbb.store', 'method' => 'get'),
                 
+                array('label' => '仓库日志记录','display'=>true, 'alias' => 'lbb.store.log', 'method' => 'get'),
+                
                 array('label' => '提现管理','display'=>true, 'alias' => 'lbb.store.withdrawing', 'method' => 'get'),
                 
                 array('label' => '充值管理','display'=>true, 'alias' => 'lbb.store.recharge', 'method' => 'get'),

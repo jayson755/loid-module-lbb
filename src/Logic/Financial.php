@@ -114,7 +114,7 @@ class Financial{
             $userStore->save();
             
             //仓库变动记录
-            (new StoreModel)->storeChange($user->lbb_user_id, $financial->financial_category, $userStore->store_num, $params['num'], 'buy', $model->toJson());
+            (new StoreModel)->storeChange($user->lbb_user_id, $userStore->store_id, $financial->financial_category, $userStore->store_num, $params['num'], 'buy', $model->toJson());
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

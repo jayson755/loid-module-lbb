@@ -20,7 +20,7 @@ class CreateLbbUserTable extends Migration
             $table->char('lbb_user_mobile', 11)->default('')->comment('预留手机号');
             $table->char('lbb_user_pwd', 32)->comment('用户密码');
             $table->char('lbb_user_paypwd', 32)->comment('支付密码');
-            $table->char('lbb_user_origin', 11)->default('0')->comment('推广来源');
+            $table->integer('lbb_user_origin')->default('0')->comment('推广来源');
             $table->char('lbb_user_uuid', 36)->default('')->comment('uuid');
             $table->timestamps();
             $table->softDeletes();

@@ -44,19 +44,4 @@ class Financial extends Controller{
         }
         return response()->json(['status'=>1,'msg'=>'操作成功']);
     }
-    
-    /**
-     * 我的理财产品
-     */
-    public function my(Request $request){
-        try {
-            $list = (new FinancialLogic)->getFinancialByUser($request->user->lbb_user_id);
-            foreach ($list as $val) {
-                $val->date = date('Y.m.d', strtotime($val->effective_date));
-            }
-        } catch (\Exception $e) {
-            return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
-        }
-        return response()->json(['status'=>1,'msg'=>'操作成功', 'data'=>$list->toArray()]);
-    }
 }
