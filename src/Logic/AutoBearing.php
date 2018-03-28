@@ -47,7 +47,7 @@ class AutoBearing{
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::info('余额计息失败：store_id='. $val->store_id . '；原因：' . $e->getMessage());
+                Log::emergency('余额计息失败：store_id='. $val->store_id . '；原因：' . $e->getMessage());
             }
         }
     }
@@ -74,7 +74,7 @@ class AutoBearing{
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::info('定存宝到期计息失败：id='. $userFinancial->id . '；原因：' . $e->getMessage());
+                Log::emergency('定存宝到期计息失败：id='. $userFinancial->id . '；原因：' . $e->getMessage());
             }
         }
     }

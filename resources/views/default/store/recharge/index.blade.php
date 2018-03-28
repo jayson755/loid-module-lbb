@@ -51,12 +51,12 @@ $(document).ready(function() {
 		},
 		colNames: ["序号", "用户", "币种", "充值地址", "充值数量", "申请时间", "处理状态"],
 		colModel: [
-			{name:"recharge_id",index: "recharge_id",width: 60,sorttype: "int",editable:false,align: "center",search: true,hidden:true},
-			{name:"user",index:"user",align: "center",editable:true,width: 90,search: true},
-			{name:"category",index:"store_category",align: "center",editable:false,search: true},
-            {name:"recharge_url",index:"recharge_url",align: "center",editable:false,width: 90,search: true},
-            {name:"recharge_num",index:"recharge_num",align: "center",editable:false,width: 90,search: true},
-            {name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true},
+			{name:"recharge_id",index: "recharge_id",width: 60,sorttype: "int",editable:false,align: "center",search: false,hidden:true},
+			{name:"user",index:"user",align: "center",editable:true,width: 90,search: false},
+			{name:"category",index:"store_category",align: "center",editable:false,search: false},
+            {name:"recharge_url",index:"recharge_url",align: "center",editable:false,width: 90,search: false},
+            {name:"recharge_num",index:"recharge_num",align: "center",editable:false,width: 90,search: false},
+            {name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: false},
             {name:"recharge_status",index:"recharge_status",align: "center",editable:true,edittype:'custom',editrules:{edithidden:true,required:true,minValue:0},
 				editoptions:{
 					custom_value: function(elem, oper, value){return getFreightElementValue(elem, oper, value, 'radio')},
@@ -68,13 +68,19 @@ $(document).ready(function() {
 				unformat:function(cellvalue, options){
 					return arrUnformat(cellvalue, statusJson, 'single');
 				},
-				width: 90,search: true},
+				width: 90,search: true,stype:'select',searchoptions:{sopt:["eq"],value:getArrVal(statusJson, 'single')}},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,
         pgbuttons:true,
 		hidegrid: false
-	}).navGrid('#pager_list_2', {edit: false, add: false, del: false, search:false,searchtext:''}).navButtonAdd('#pager_list_2', {
+	}).navGrid('#pager_list_2', {edit: false, add: false, del: false, search:true,searchtext:''},{},{},{},{
+		caption : "搜索",
+		top:50,
+		left:($(document).innerWidth() - 400) / 5 * 2,
+		width:500,
+		multipleSearch:true
+	}).navButtonAdd('#pager_list_2', {
 		caption:"",
 		buttonicon:"fa fa-legal",
 		position: "last",

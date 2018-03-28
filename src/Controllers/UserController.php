@@ -14,7 +14,12 @@ class UserController extends Controller{
     }
     
     public function _getList(Request $request, $type){
-        return \Loid\Frame\Support\JqGrid::instance(['model'=> DB::table('lbb_user'),'vagueField'=>['lbb_user_id','lbb_user_account','lbb_user_name','lbb_user_mobile','lbb_user_origin', 'created_at'], 'filtField'=>['lbb_user_pwd','lbb_user_paypwd']])->query();
+        $list = \Loid\Frame\Support\JqGrid::instance(['model'=> DB::table('lbb_user'),'vagueField'=>['lbb_user_id','lbb_user_account','lbb_user_name','lbb_user_mobile','lbb_user_origin', 'created_at'], 'filtField'=>['lbb_user_pwd','lbb_user_paypwd']])->query();
+        
+        foreach ($list['rows'] as $key => $val) {
+            $list['rows'][$key]['origin'] = DB::table('lbb_user')->where('lbb_user_id', $val['lbb_user_origin'])->value('lbb_user_account');
+        }
+        return $list;
     }
     
     public function modify(){

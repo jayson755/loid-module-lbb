@@ -53,7 +53,7 @@ $(document).ready(function() {
 		},
 		colNames: ["序号", "用户", "币种类型", "变动类型", "变动数量", "变动数量", "来源", "时间"],
 		colModel: [
-			{name:"log_id",index: "log_id",width: 60,sorttype: "int",editable:false,align: "center",search: true,hidden:false},
+			{name:"log_id",index: "log_id",width: 60,sorttype: "int",editable:false,align: "center",search: true,hidden:true},
 			{name:"user_id",index:"user_id",align: "center",editable:false,width: 90,
                 editoptions:{value:selectInit()},
                 formatter:function(cellvalue, options, rowObject){return arrFormat(cellvalue, userJson, 'complex');},
@@ -82,8 +82,8 @@ $(document).ready(function() {
 					return arrUnformat(cellvalue, flagJson, 'single');
 				},
 				width: 90,search: true,stype:'select',searchoptions:{sopt:["eq"],value:getArrVal(flagJson, 'single')}},
-            {name:"store_num",index:"store_num",align: "center",editable:false,width: 90,search: true},
-            {name:"last_num",index:"last_num",align: "center",editable:false,width: 90,search: true},
+            {name:"store_num",index:"store_num",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq"]}},
+            {name:"last_num",index:"last_num",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq"]}},
             {name:"origin_user_id",index:"origin_user_id",align: "center",editable:false,width: 90,
                 editoptions:{value:selectInit()},
                 formatter:function(cellvalue, options, rowObject){return arrFormat(cellvalue, userJson, 'complex');},
@@ -92,7 +92,7 @@ $(document).ready(function() {
                 stype:'select',
                 searchoptions:{sopt:["eq"],value:getArrVal(userJson, 'complex')},
             },
-            {name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq",'lt','le','gt','ge'],dataInit:dataInit}},
+            {name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq"],dataInit:dataInit}},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,

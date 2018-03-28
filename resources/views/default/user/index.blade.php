@@ -58,7 +58,7 @@ $(document).ready(function() {
 			
 			{name:"lbb_user_mobile",index:"lbb_user_mobile",align: "center",editable:true,edittype:'text',editrules:{edithidden:true,required:true},width: 90,search: true},
             
-            {name:"lbb_user_origin",index:"lbb_user_origin",align: "center",editable:true,width: 90,search: true},
+            {name:"origin",index:"lbb_user_origin",align: "center",editable:true,width: 90,search: true},
             
 			{name:"lbb_user_pwd",index:"lbb_user_pwd",align: "center",editable:true,edittype:'password',editrules:{edithidden:true},width: 90,search: false, hidden:true},
 			

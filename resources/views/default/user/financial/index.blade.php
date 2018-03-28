@@ -79,9 +79,9 @@ $(document).ready(function() {
 					return arrUnformat(cellvalue, statusJson, 'single');
 				},
 				width: 90,search: true,stype:'select',searchoptions:{sopt:["eq"],value:getArrVal(statusJson, 'single')}},
-            {name:"effective_date",index:"effective_date",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq",'lt','le','gt','ge'],dataInit:dataInit}},
-            {name:"closed_date",index:"closed_date",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq",'lt','le','gt','ge'],dataInit:dataInit}},
-            {name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq",'lt','le','gt','ge'],dataInit:dataInit}},
+            {name:"effective_date",index:"effective_date",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq"],dataInit:dataInit}},
+            {name:"closed_date",index:"closed_date",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq"],dataInit:dataInit}},
+            {name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true,searchoptions:{sopt:["eq"],dataInit:dataInit}},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,

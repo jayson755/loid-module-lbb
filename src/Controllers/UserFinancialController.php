@@ -16,8 +16,7 @@ class UserFinancialController extends Controller{
     }
     
     public function _getList(Request $request, $type){
-        $list = \Loid\Frame\Support\JqGrid::instance(['model'=> DB::table('lbb_user_financial')])->query();
-        return $list;
+        return \Loid\Frame\Support\JqGrid::instance(['model'=> DB::table('lbb_user_financial')])->query();
     }
     
     public function modify(Request $request){
