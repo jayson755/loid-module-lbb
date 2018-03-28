@@ -53,7 +53,7 @@ class User{
         if ($validator->fails()) {
             throw new \Exception($validator->errors()->first());
         }
-        if (base64_decode($params['user_origin'])) {
+        if (base64_decode($params['user_origin'] ?? '')) {
             $origin_user_id = LbbUser::where('lbb_user_uuid', base64_decode($params['user_origin']))->value('lbb_user_id');
         }
         $model = new LbbUser;
