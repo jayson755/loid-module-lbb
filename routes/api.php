@@ -28,6 +28,8 @@ Route::post('financial.html', Loid\Module\Lbb\Api\Financial::class . '@getlist')
 /* 登录 */
 Route::middleware(\Illuminate\Session\Middleware\StartSession::class)->post('signin.html', Loid\Module\Lbb\Api\User::class . '@signin');
 
+/* 登出 */
+Route::middleware(\Illuminate\Session\Middleware\StartSession::class)->post('logout.html', Loid\Module\Lbb\Api\User::class . '@logout');
 
 Route::group(['prefix'=>'store', 'middleware'=>[\Illuminate\Session\Middleware\StartSession::class, \Loid\Module\Lbb\Middleware\Authentication::class]], function () {
     

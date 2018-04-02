@@ -39,6 +39,14 @@ class User extends Controller{
     }
     
     /**
+     * 登出
+     */
+    public function logout(Request $request){
+        $request->session()->forget('lbb_user');
+        return response()->json(['status'=>1,'msg'=>'已登出']);
+    }
+    
+    /**
      * 用户的推广用户
      */
     public function promote(Request $request, int $user_id){
