@@ -47,6 +47,13 @@ Route::group(['prefix'=>'financial', 'middleware'=>[\Illuminate\Session\Middlewa
 });
 
 Route::group(['prefix'=>'my', 'middleware'=>[\Illuminate\Session\Middleware\StartSession::class, \Loid\Module\Lbb\Middleware\Authentication::class]], function () {
+    
+    //修改密码
+    Route::post('change/password.html', Loid\Module\Lbb\Api\My::class . '@changePassowrd');
+    
+    //修改支付密码
+    Route::post('change/paypassword.html', Loid\Module\Lbb\Api\My::class . '@changePayPassowrd');
+    
     /* 我的理财产品 */
     Route::post('financial.html', Loid\Module\Lbb\Api\My::class . '@financial');
     
@@ -59,7 +66,7 @@ Route::group(['prefix'=>'my', 'middleware'=>[\Illuminate\Session\Middleware\Star
     Route::post('promote.html', Loid\Module\Lbb\Api\My::class . '@promote');
     
     /*我的收支记录*/
-    Route::post('balancerecord/{page}.html', Loid\Module\Lbb\Api\My::class . '@balancerecord');
+    Route::post('balancerecord/{category}/{page}.html', Loid\Module\Lbb\Api\My::class . '@balancerecord');
     
 });
 

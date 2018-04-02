@@ -70,8 +70,8 @@ class Store extends Model
     /**
      * 收支记录
      */
-    public function record(int $user_id, int $page_index, string $type = ''){
-        $object = DB::table('lbb_store_log')->select('log_id','store_category','flag','store_num','last_num','created_at')->where('user_id', $user_id);
+    public function record(int $user_id, int $category, int $page_index, string $type = ''){
+        $object = DB::table('lbb_store_log')->select('log_id','store_category','flag','store_num','last_num','created_at')->where('user_id', $user_id)->where('store_category', $category);
         if (in_array($type, $this->flag)) {
             $object = $object->where('flag', $type);
         }

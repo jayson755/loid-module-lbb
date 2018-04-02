@@ -1,7 +1,7 @@
 <?php
 namespace Loid\Module\Lbb\Logic;
 
-use Loid\Module\Lbb\Model\LbbUser;
+use Loid\Module\Lbb\Model\LbbUser as LbbUserModel;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
 use Validator;
@@ -12,14 +12,14 @@ class User{
      * 获取用户树形
      */
     public function getUserPromote(int $userId){
-        return LbbUser::where('lbb_user_origin', $userId)->select('lbb_user_id as id','lbb_user_account as name')->get();
+        return LbbUserModel::where('lbb_user_origin', $userId)->select('lbb_user_id as id','lbb_user_account as name')->get();
     }
     
     /**
      * 获取用户树形
      */
     public function getUserTree(int $userId){
-        $list = LbbUser::where('lbb_user_origin', '>', 0)->select('lbb_user_id as id','lbb_user_origin as origin','lbb_user_account as name')->get()->toArray();
+        $list = LbbUserModel::where('lbb_user_origin', '>', 0)->select('lbb_user_id as id','lbb_user_origin as origin','lbb_user_account as name')->get()->toArray();
         return (new \Loid\Frame\Support\Tree($list, ['id', 'origin']))->leaf($userId);
     }
     
@@ -54,9 +54,9 @@ class User{
             throw new \Exception($validator->errors()->first());
         }
         if (base64_decode($params['user_origin'] ?? '')) {
-            $origin_user_id = LbbUser::where('lbb_user_uuid', base64_decode($params['user_origin']))->value('lbb_user_id');
+            $origin_user_id = LbbUserModel::where('lbb_user_uuid', base64_decode($params['user_origin']))->value('lbb_user_id');
         }
-        $model = new LbbUser;
+        $model = new LbbUserModel;
         $model->lbb_user_account = $params['user_account'];
         $model->lbb_user_name = $params['user_name'] ?? '';
         $model->lbb_user_mobile = $params['user_mobile'];
@@ -69,12 +69,63 @@ class User{
     }
     
     /**
+     * 修改密码
+     */
+    public function changePassowrd(int $user_id, string $old, string $new, string $valide){
+        $validator = Validator::make(['old'=>$old, 'password'=> $new, 'password_confirmation'=> $valide], [
+            'old' => 'required',
+            'password' => 'required|min:6|max:20|confirmed',
+            'password_confirmation' => 'required',
+        ],[
+            'old.required' => '原密码必须',
+            'password.required' => '密码必须为6-20个字符',
+            'password.min' => '密码必须为6-20个字符',
+            'password.max' => '密码必须为6-20个字符',
+            'password.confirmed' => '确认密码不一致',
+            'password_confirmation.required' => '确认密码必须',
+        ]);
+        if ($validator->fails()) {
+            throw new \Exception($validator->errors()->first());
+        }
+        $user = LbbUserModel::where('lbb_user_id', $user_id)->first();
+        if (false === $this->checkPassword($user, $old)) {
+            throw new \Exception('原密码错误');
+        }
+        $user->lbb_user_pwd = $this->setPassword($new);
+        $user->save();
+    }
+    
+    /**
+     * 修改支付密码
+     */
+    public function changePayPassowrd(int $user_id, string $password, string $newpaypassword){
+        $validator = Validator::make(['password'=> $password, 'newpaypassword'=> $newpaypassword], [
+            'password' => 'required',
+            'newpaypassword' => 'required|min:6|max:20',
+        ],[
+            'password.required' => '密码错误',
+            'newpaypassword.required' => '支付密码必须为6-20个字符',
+            'newpaypassword.min' => '支付密码必须为6-20个字符',
+            'newpaypassword.max' => '支付密码必须为6-20个字符',
+        ]);
+        if ($validator->fails()) {
+            throw new \Exception($validator->errors()->first());
+        }
+        $user = LbbUserModel::where('lbb_user_id', $user_id)->first();
+        if (false === $this->checkPassword($user, $password)) {
+            throw new \Exception('密码错误');
+        }
+        $user->lbb_user_paypwd = $this->setPassword($newpaypassword);
+        $user->save();
+    }
+    
+    /**
      * 获取用户信息
      */
     public function getUser(string $account){
         static $_lbb_user;
         if (!isset($_lbb_user[$account])) {
-            $_lbb_user[$account] = (new LbbUser)::where('lbb_user_account', $account)->first();
+            $_lbb_user[$account] = (new LbbUserModel)::where('lbb_user_account', $account)->first();
         }
         return $_lbb_user[$account];
     }
@@ -95,7 +146,7 @@ class User{
     /**
      * 用户支付密码验证
      */
-    public function verifyPayPassword(LbbUser $user, string $payPassword) :bool {
+    public function verifyPayPassword(LbbUserModel $user, string $payPassword) :bool {
         if (empty($payPassword)) return false;
         return $this->checkPayPassword($user, $payPassword);
     }
@@ -103,13 +154,13 @@ class User{
     /**
      * 比对支付密码
      */
-    private function checkPayPassword(LbbUser $user, string $payPassword) :bool {
+    private function checkPayPassword(LbbUserModel $user, string $payPassword) :bool {
         return (0 === strcmp($this->setPassword($payPassword), $user->lbb_user_paypwd));
     }
     /**
      * 比对密码
      */
-    private function checkPassword(LbbUser $user, string $password) :bool {
+    private function checkPassword(LbbUserModel $user, string $password) :bool {
         return (0 === strcmp($this->setPassword($password), $user->lbb_user_pwd));
     }
     

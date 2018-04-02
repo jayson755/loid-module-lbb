@@ -194,11 +194,12 @@ class Store{
     /**
      * 收支记录
      * @param int $user_id 用户ID
+     * @param int $category 分类
      * @param int $page_index 页码
      * @param string $type 记录类型
      */
-    public function record(int $user_id, int $page_index, string $type = ''){
-        return (new StoreModel)->record($user_id, $page_index, $type);
+    public function record(int $user_id, int $category, int $page_index, string $type = ''){
+        return (new StoreModel)->record($user_id, $category, $page_index, $type);
     }
     
     /**

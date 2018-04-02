@@ -95,12 +95,37 @@ class My extends Controller{
     /**
      * 我的收支记录
      */
-    public function balancerecord(Request $request, int $pageindex){
+    public function balancerecord(Request $request, int $category, int $pageindex){
         try {
-            $list = (new StoreLogic)->record($request->user->lbb_user_id, $pageindex);
+            $list = (new StoreLogic)->record($request->user->lbb_user_id, $category, $pageindex);
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
         }
         return response()->json(['status'=>1,'msg'=>'', 'data'=>['list'=>$list]]);
     }
+    
+    /**
+     * 修改密码
+     */
+    public function changePassowrd(Request $request){
+        try {
+            (new UserLogic)->changePassowrd($request->user->lbb_user_id, (string)$request->input('old'), (string)$request->input('new'), (string)$request->input('confirme'));
+        } catch (\Exception $e) {
+            return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
+        }
+        return response()->json(['status'=>1,'msg'=>'操作成功']);
+    }
+    
+    /**
+     * 修改支付密码
+     */
+    public function changePayPassowrd(Request $request){
+        try {
+            (new UserLogic)->changePayPassowrd($request->user->lbb_user_id, (string)$request->input('password'), (string)$request->input('newpaypassword'));
+        } catch (\Exception $e) {
+            return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
+        }
+        return response()->json(['status'=>1,'msg'=>'操作成功']);
+    }
+    
 }
