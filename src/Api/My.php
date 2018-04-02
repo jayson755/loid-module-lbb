@@ -52,7 +52,7 @@ class My extends Controller{
                 }
                 if (false === $ishave) {
                     $store[] = [
-                        'recharge' => false,
+                        'recharge' => true,
                         'store_category' => $val->category_id,
                         'store_num' => 0,
                         'category' => [
