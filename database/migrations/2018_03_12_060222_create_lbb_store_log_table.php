@@ -20,6 +20,7 @@ class CreateLbbStoreLogTable extends Migration
             $table->integer('store_category')->default(0)->comment('类型');
             $table->string('flag', 20)->default('none')->comment('变动类型');
             $table->decimal('store_num', 16, 6)->default(0)->comment('变动数量');
+            $table->decimal('last_num', 16, 6)->default(0)->comment('剩余数量');
             $table->integer('origin_store_id')->default(0)->comment('来源仓库ID');
             $table->integer('origin_user_id')->default(0)->comment('来源用户ID');
             $table->text('store_data')->comment('数据');
