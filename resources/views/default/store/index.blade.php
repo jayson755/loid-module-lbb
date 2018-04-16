@@ -35,6 +35,7 @@
 $(document).ready(function() {
 	$("#table_list_2").jqGrid({
         url: "{{route('lbb.store.list', ['param'=>'type'])}}",
+		editurl:"{{route('lbb.store.list.modify')}}",
 		datatype: "json",
 		height:$(window).height() - 210,
 		autowidth: true,
@@ -50,16 +51,36 @@ $(document).ready(function() {
 		},
 		colNames: ["序号", "用户", "币种", "库存数量"],
 		colModel: [
-			{name:"store_id",index: "store_id",width: 60,sorttype: "int",editable:false,align: "center",search: true,hidden:true},
-			{name:"user",index:"user",align: "center",editable:true,width: 90,search: true},
+			{name:"store_id",index: "store_id",width: 60,sorttype: "int",editable:true,align: "center",search: true,hidden:true},
+			{name:"user",index:"user",align: "center",editable:false,width: 90,search: true},
 			{name:"category",index:"store_category",align: "center",editable:false,search: true},
-            {name:"store_num",index:"store_num",align: "center",editable:false,width: 90,search: true},
+            {name:"store_num",index:"store_num",align: "center",editable:true,width: 90,search: true},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,
         pgbuttons:true,
 		hidegrid: false
-	}).navGrid('#pager_list_2', {edit: false, add: false, del: false, search:false,searchtext:''});
+	}).navGrid('#pager_list_2', {edit: true, add: false, del: false, search:false,searchtext:''},{
+		editCaption : "修改",
+		top:50,
+		left:($(document).innerWidth() - 400) / 5 * 2,
+		width:500,
+		jqModal : true,  
+		reloadAfterSubmit : true,  
+		afterShowForm : function(form) {},  
+		afterShowForm : function(form) {
+            $("#lbb_user_account").attr('disabled', true);
+			$("#lbb_user_pwd").attr('placeholder', '不修改密码不输入');
+		},  
+		afterSubmit: function(response, postdata) {
+			if (response.responseJSON.code == 0) {
+				return [false, response.responseJSON.msg];
+			} else {
+				window.top._toastr(response.responseJSON.msg);
+				return [true, '', ''];
+			}
+		}
+	},{},{},{});
 });
 //设置宽度
 jQuery("#table_list_2").setGridWidth($("#jqGridRow").innerWidth(), true);

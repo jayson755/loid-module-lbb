@@ -88,6 +88,47 @@ $(document).ready(function() {
 				return [true, '', ''];
 			}
 		}
+	}).navButtonAdd('#pager_list_2', {
+		caption:"",
+		buttonicon:"fa fa-user-times",
+		position: "last",
+		title:"冻结",
+		cursor: "pointer",
+		onClickButton:function(){
+		
+            var id = $("#table_list_2").jqGrid('getGridParam','selrow');
+            if (!id) {
+                window.top._toastr('请选择用户!', 'error', '错误提示');return false;
+            } else {
+                var rowData = $("#table_list_2").jqGrid("getRowData", id);
+                if (rowData.recharge_status == 1) {
+					window.top._toastr('该用户已处于冻结状态！', 'error', '错误提示');return false;
+                }
+				layer.confirm('确定要冻结用户：' + rowData.lbb_user_account + '【' + rowData.lbb_user_mobile + '】吗？', {btn : [ '确定', '取消' ]}, function(index) {
+					var recharge = layer.load(0, {shade: [0.1, '#393D49']});
+					$.ajax({
+						type:'post',
+						data:{'user_id':rowData.lbb_user_id},
+						dataType:'json',
+						url:'{{route('lbb.user.freeze')}}',
+						success:function(json){
+							layer.close(recharge);
+							if (json.code) {
+								layer.closeAll();
+								window.top._toastr('用户已冻结!', 'success', '成功提示');
+								window.location.reload();
+							} else {
+								window.top._toastr(json.msg, 'error', '错误提示');return false;
+							}
+						},
+						error:function(){
+							layer.closeAll();
+							window.top._toastr('网络错误!', 'error', '错误提示');return false;
+						}
+					});
+				});
+            }
+		}
 	});
 });
 //设置宽度

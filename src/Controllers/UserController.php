@@ -14,7 +14,7 @@ class UserController extends Controller{
     }
     
     public function _getList(Request $request, $type){
-        $list = \Loid\Frame\Support\JqGrid::instance(['model'=> DB::table('lbb_user'),'vagueField'=>['lbb_user_id','lbb_user_account','lbb_user_name','lbb_user_mobile','lbb_user_origin', 'created_at'], 'filtField'=>['lbb_user_pwd','lbb_user_paypwd']])->query();
+        $list = \Loid\Frame\Support\JqGrid::instance(['model'=> DB::table('lbb_user')->whereNull('deleted_at'),'vagueField'=>['lbb_user_id','lbb_user_account','lbb_user_name','lbb_user_mobile','lbb_user_origin', 'created_at'], 'filtField'=>['lbb_user_pwd','lbb_user_paypwd']])->query();
         
         foreach ($list['rows'] as $key => $val) {
             $list['rows'][$key]['origin'] = DB::table('lbb_user')->where('lbb_user_id', $val['lbb_user_origin'])->value('lbb_user_account');
@@ -22,7 +22,19 @@ class UserController extends Controller{
         return $list;
     }
     
-    public function modify(){
-        
+    /**
+     * 冻结用户
+     */
+    public function freeze(Request $request){
+        try {
+            $LbbUser = \Loid\Module\Lbb\Model\LbbUser::find($request->input('user_id'));
+            if (empty($LbbUser) || $LbbUser->trashed()) {
+                throw new \Exception('该用户已被冻结！');
+            }
+            $LbbUser->delete();
+            return $this->response(true);
+        } catch (\Exception $e) {
+            return $this->response(false, '', $e->getMessage());
+        }
     }
 }

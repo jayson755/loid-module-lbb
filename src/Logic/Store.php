@@ -41,6 +41,33 @@ class Store{
         return $store;
     }
     
+    
+    /**
+     * 活动增加库存 目前用于后台修改
+     */
+    public function event(LbbUserModel $user, int $category, string $num){
+        try {
+            DB::beginTransaction();
+            
+            if ((double)$num < 0) {
+                throw new \Exception('库存量必须大于0');
+            }
+            $store = $this->getStoreByCategory2User($user->lbb_user_id, $category);
+            
+            $recharge_num = bcsub($num, $store->store_num, 6);
+            $store->store_num = $num;
+            $store->save();
+            //仓库变动记录
+            (new StoreModel)->storeChange($store->user_id, $store->store_id, $store->store_category, $store->store_num, $recharge_num, 'event', $store->toJson());
+                
+            
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
+        
+    }
     /**
      * 充值
      */
@@ -85,7 +112,7 @@ class Store{
         try {
             DB::beginTransaction();
             $storeRecharge = StoreRecharge::where('recharge_id', $recharge_id)->where('recharge_status', 0)->first();
-            if (empty($storeRecharge)) {
+            if (empty($storeRecharge) || $storeRecharge->trashed()) {
                 throw new \Exception('申请不存在或已处理');
             }
             
@@ -156,7 +183,7 @@ class Store{
         try {
             DB::beginTransaction();
             $storeWithdraw = StoreWithdraw::where('withdraw_id', $withdraw_id)->where('withdraw_status', 0)->first();
-            if (empty($storeWithdraw)) {
+            if (empty($storeWithdraw) || $storeWithdraw->trashed()) {
                 throw new \Exception('申请不存在或已处理');
             }
             $store = $this->getStoreByCategory2User($storeWithdraw->user_id, $storeWithdraw->store_category);

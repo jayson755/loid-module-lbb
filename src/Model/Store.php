@@ -23,6 +23,7 @@ class Store extends Model
         'buy' => '购买理财',
         'balance_promote' => '余额利息推广收益',
         'financial_promote' => '理财利润推广收益',
+        'event' => '活动赠送'
     ];
     
     public function category(){

@@ -7,12 +7,16 @@ Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Midd
     /*用户管理*/
     Route::get('lbb/user', Loid\Module\Lbb\Controllers\UserController::class.'@index')->name('lbb.user');
     Route::get('lbb/user/list/{param}', Loid\Module\Lbb\Controllers\UserController::class . '@getjQGridList')->name('lbb.user.list');
+    Route::post('lbb/user/freeze', Loid\Module\Lbb\Controllers\UserController::class . '@freeze')->name('lbb.user.freeze');
     Route::post('role/modify', Loid\Module\Lbb\Controllers\UserController::class . '@modify')->name('lbb.user.modify');
     
     
     /*仓库管理*/
     Route::get('lbb/store', Loid\Module\Lbb\Controllers\StoreController::class.'@index')->name('lbb.store');
     Route::get('lbb/store/list/{param}', Loid\Module\Lbb\Controllers\StoreController::class . '@getjQGridList')->name('lbb.store.list');
+    Route::post('lbb/store/modify', Loid\Module\Lbb\Controllers\StoreController::class . '@modify')->name('lbb.store.list.modify');
+    
+    
     
     /*仓库日志记录*/
     Route::get('lbb/store/log', Loid\Module\Lbb\Controllers\StoreLogController::class.'@index')->name('lbb.store.log');
@@ -22,12 +26,14 @@ Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Midd
     Route::get('lbb/store/recharge', Loid\Module\Lbb\Controllers\StoreRechargeController::class.'@index')->name('lbb.store.recharge');
     Route::get('lbb/store/recharge/list/{param}', Loid\Module\Lbb\Controllers\StoreRechargeController::class . '@getjQGridList')->name('lbb.store.recharge.list');
     Route::post('lbb/store/recharge/dealwith', Loid\Module\Lbb\Controllers\StoreRechargeController::class . '@dealwith')->name('lbb.store.recharge.dealwith');
+    Route::post('lbb/store/recharge/del', Loid\Module\Lbb\Controllers\StoreRechargeController::class . '@delete')->name('lbb.store.recharge.del');
     
     
     /*提现管理*/
     Route::get('lbb/store/withdrawing', Loid\Module\Lbb\Controllers\StoreWithdrawingController::class.'@index')->name('lbb.store.withdrawing');
     Route::get('lbb/store/withdrawing/list/{param}', Loid\Module\Lbb\Controllers\StoreWithdrawingController::class . '@getjQGridList')->name('lbb.store.withdrawing.list');
     Route::post('lbb/store/withdrawing/dealwith', Loid\Module\Lbb\Controllers\StoreWithdrawingController::class . '@dealwith')->name('lbb.store.withdrawing.dealwith');
+    Route::post('lbb/store/withdrawing/del', Loid\Module\Lbb\Controllers\StoreWithdrawingController::class . '@delete')->name('lbb.store.withdrawing.del');
     
     
     /*充值管理*/

@@ -42,7 +42,7 @@ $(document).ready(function() {
 		shrinkToFit: true,
 		rowNum: {{$rows}},
 		rowList: [10, 20, 30],
-        sortname: 'created_at',
+        sortname: 'recharge_id',
         sortorder: 'desc',
 		loadComplete : function(xhr){ //请求成功事件
 			try{
@@ -108,6 +108,47 @@ $(document).ready(function() {
 							if (json.code) {
 								layer.closeAll();
 								window.top._toastr('申请处理成功!', 'success', '成功提示');
+								window.location.reload();
+							} else {
+								window.top._toastr(json.msg, 'error', '错误提示');return false;
+							}
+						},
+						error:function(){
+							layer.closeAll();
+							window.top._toastr('网络错误!', 'error', '错误提示');return false;
+						}
+					});
+				});
+            }
+		}
+	}).navButtonAdd('#pager_list_2', {
+		caption:"",
+		buttonicon:"fa fa-trash",
+		position: "last",
+		title:"删除申请",
+		cursor: "pointer",
+		onClickButton:function(){
+            var id = $("#table_list_2").jqGrid('getGridParam','selrow');
+            if (!id) {
+                window.top._toastr('请选择记录!', 'error', '错误提示');return false;
+            } else {
+                var rowData = $("#table_list_2").jqGrid("getRowData", id);
+                if (rowData.recharge_status == 1) {
+					window.top._toastr('该充值申请已处理，不能删除！', 'error', '错误提示');return false;
+                }
+				
+				layer.confirm('确定要删除该条申请吗？', {btn : [ '确定', '取消' ]}, function(index) {
+					var recharge = layer.load(0, {shade: [0.1, '#393D49']});
+					$.ajax({
+						type:'post',
+						data:{'recharge_id':rowData.recharge_id},
+						dataType:'json',
+						url:'{{route('lbb.store.recharge.del')}}',
+						success:function(json){
+							layer.close(recharge);
+							if (json.code) {
+								layer.closeAll();
+								window.top._toastr('申请删除成功!', 'success', '成功提示');
 								window.location.reload();
 							} else {
 								window.top._toastr(json.msg, 'error', '错误提示');return false;
