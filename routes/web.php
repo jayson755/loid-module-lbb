@@ -4,11 +4,15 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Middleware\MoudleInit::class]], function () {
     
+    /*业务设置*/
+    Route::get('lbb/business/set', Loid\Module\Lbb\Controllers\BusinessController::class.'@set')->name('lbb.business.set');
+    Route::post('lbb/business/setsave', Loid\Module\Lbb\Controllers\BusinessController::class.'@setSave')->name('lbb.business.setsave');
+    
     /*用户管理*/
     Route::get('lbb/user', Loid\Module\Lbb\Controllers\UserController::class.'@index')->name('lbb.user');
     Route::get('lbb/user/list/{param}', Loid\Module\Lbb\Controllers\UserController::class . '@getjQGridList')->name('lbb.user.list');
     Route::post('lbb/user/freeze', Loid\Module\Lbb\Controllers\UserController::class . '@freeze')->name('lbb.user.freeze');
-    Route::post('role/modify', Loid\Module\Lbb\Controllers\UserController::class . '@modify')->name('lbb.user.modify');
+    Route::post('lbb/user/modify', Loid\Module\Lbb\Controllers\UserController::class . '@modify')->name('lbb.user.modify');
     
     
     /*仓库管理*/

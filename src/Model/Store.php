@@ -21,8 +21,12 @@ class Store extends Model
         'interest' => '余额利息',
         'expire' => '理财利润',
         'buy' => '购买理财',
-        'balance_promote' => '余额利息推广收益',
-        'financial_promote' => '理财利润推广收益',
+        'balance_promote_1' => '余额利息一代推广收益',
+        'balance_promote_2' => '余额利息二代推广收益',
+        'balance_promote_3' => '余额利息三代推广收益',
+        'financial_promote_1' => '理财利润一代推广收益',
+        'financial_promote_2' => '理财利润二代推广收益',
+        'financial_promote_3' => '理财利润三代推广收益',
         'event' => '活动赠送'
     ];
     

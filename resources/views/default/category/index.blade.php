@@ -52,10 +52,10 @@ $(document).ready(function() {
 		},
 		colNames: ["序号", "理财币种", "币种URL", "状态", "创建时间"],
 		colModel: [
-			{name:"category_id",index: "category_id",width: 60,sorttype: "int",editable:true,align: "center",search: true,hidden:true},
+			{name:"category_id",index: "category_id",width: 60,sorttype: "int",editable:true,align: "center",search: false,hidden:true},
 			
-			{name:"category_name",index:"category_name",align: "center",editable:true,width: 90,search: true},
-			{name:"category_url",index:"category_url",align: "center",editable:true,width: 90,search: true},
+			{name:"category_name",index:"category_name",align: "center",editable:true,width: 90,search: false},
+			{name:"category_url",index:"category_url",align: "center",editable:true,width: 90,search: false},
             
             {name:"category_status",index:"category_status",align: "center",editable:true,edittype:'custom',editrules:{edithidden:true,required:true,minValue:0},
 				editoptions:{
@@ -68,15 +68,15 @@ $(document).ready(function() {
 				unformat:function(cellvalue, options){
 					return arrUnformat(cellvalue, statusJson, 'single');
 				},
-				width: 90,search: true},
+				width: 90, search: true,stype:'select',searchoptions:{sopt:["eq"],value:getArrVal(statusJson, 'single')}},
 			
-			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true},
+			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: false},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,
         pgbuttons:true,
 		hidegrid: false
-	}).navGrid('#pager_list_2', {edit: true, add: true, del: false, search:false,searchtext:''},{
+	}).navGrid('#pager_list_2', {edit: true, add: true, del: false, search:true,searchtext:''},{
 		editCaption : "修改",
 		top:50,
 		left:($(document).innerWidth() - 400) / 5 * 2,

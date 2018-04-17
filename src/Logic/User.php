@@ -71,7 +71,7 @@ class User{
     /**
      * 修改密码
      */
-    public function changePassowrd(int $user_id, string $old, string $new, string $valide){
+    public function changePassword(int $user_id, string $old, string $new, string $valide){
         $validator = Validator::make(['old'=>$old, 'password'=> $new, 'password_confirmation'=> $valide], [
             'old' => 'required',
             'password' => 'required|min:6|max:20|confirmed',
@@ -98,7 +98,7 @@ class User{
     /**
      * 修改支付密码
      */
-    public function changePayPassowrd(int $user_id, string $password, string $newpaypassword){
+    public function changePayPassword(int $user_id, string $password, string $newpaypassword){
         $validator = Validator::make(['password'=> $password, 'newpaypassword'=> $newpaypassword], [
             'password' => 'required',
             'newpaypassword' => 'required|min:6|max:20',
@@ -167,7 +167,7 @@ class User{
     /**
      * 字符串生成密码
      */
-    private function setPassword(string $str) : string {
+    public function setPassword(string $str) : string {
         return md5(md5($str) . md5('5bdc5a78e0cc062576ee989ed19b8019'));
     }
 }

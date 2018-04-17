@@ -107,9 +107,9 @@ class My extends Controller{
     /**
      * 修改密码
      */
-    public function changePassowrd(Request $request){
+    public function changePassword(Request $request){
         try {
-            (new UserLogic)->changePassowrd($request->user->lbb_user_id, (string)$request->input('old'), (string)$request->input('new'), (string)$request->input('confirme'));
+            (new UserLogic)->changePassword($request->user->lbb_user_id, (string)$request->input('old'), (string)$request->input('new'), (string)$request->input('confirme'));
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
         }
@@ -119,9 +119,9 @@ class My extends Controller{
     /**
      * 修改支付密码
      */
-    public function changePayPassowrd(Request $request){
+    public function changePayPassword(Request $request){
         try {
-            (new UserLogic)->changePayPassowrd($request->user->lbb_user_id, (string)$request->input('password'), (string)$request->input('newpaypassword'));
+            (new UserLogic)->changePayPassword($request->user->lbb_user_id, (string)$request->input('password'), (string)$request->input('newpaypassword'));
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
         }

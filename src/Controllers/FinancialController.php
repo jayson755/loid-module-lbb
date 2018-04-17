@@ -7,14 +7,16 @@ use Illuminate\Http\Request;
 use Loid\Module\Lbb\Controllers\Controller;
 use Loid\Module\Lbb\Logic\Financial as FinancialLogic;
 use Loid\Module\Lbb\Logic\Category as CategoryLogic;
+use Loid\Module\Lbb\Model\BusinessSet as BusinessSetModel;
 use DB;
 
 class FinancialController extends Controller{
    
     public function index(){
+        $financial_limit = (new BusinessSetModel)->getBusiness('financial_limit');
         return $this->view("{$this->view_prefix}/financial/index", [
             'categoryJson'=>(new CategoryLogic)->getCategoryList('on', ['category_id as id', 'category_name as title'])->toJson(),
-            'limitJson' => json_encode(array_column(config('business.financial_limit'), 'date', 'index')),
+            'limitJson' => json_encode(array_column($financial_limit, 'date', 'index')),
         ]);
     }
     

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use Loid\Module\Lbb\Logic\Financial as FinancialLogic;
+use Loid\Module\Lbb\Model\BusinessSet as BusinessSetModel;
 
 class Financial extends Controller{
     
@@ -14,7 +15,8 @@ class Financial extends Controller{
      */
     public function getlist(Request $request){
         try {
-            $limit = array_column(config('business.financial_limit'), 'date', 'index');
+            $financial_limit = (new BusinessSetModel)->getBusiness('financial_limit');
+            $limit = array_column($financial_limit, 'date', 'index');
             $list = (new FinancialLogic)->getFinancial();
             foreach ($list as $val) {
                 $val->category = $val->category;

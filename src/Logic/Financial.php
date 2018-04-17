@@ -6,6 +6,7 @@ use Loid\Module\Lbb\Model\UserFinancial as UserFinancialModel;
 use Loid\Module\Lbb\Model\Store as StoreModel;
 use Illuminate\Http\Request;
 use Loid\Module\Lbb\Model\LbbUser;
+use Loid\Module\Lbb\Model\BusinessSet as BusinessSetModel;
 use Validator;
 use DB;
 
@@ -95,7 +96,8 @@ class Financial{
         }
         try {
             DB::beginTransaction();
-            $business = config('business.financial_limit')[$financial->financial_limit];
+            $financial_limit = (new BusinessSetModel)->getBusiness('financial_limit');
+            $business = $financial_limit[$financial->financial_limit];
             $model = new UserFinancialModel;
             $model->financial_id = $financial->financial_id;
             $model->financial_category = $financial->financial_category;
@@ -106,7 +108,7 @@ class Financial{
             $model->financial_status = 'on';
             $model->effective_date = date('Y-m-d H:i:s');
             $model->closed_date = date('Y-m-d H:i:s', time() + $business['date'] * 86400);
-            $model->financial_num = bcmul($params['num'], $business['rate'], 6);
+            $model->financial_num = bcmul($params['num'], bcdiv($business['rate'], 100, 6), 6);
             $model->save();
             
             //减库存

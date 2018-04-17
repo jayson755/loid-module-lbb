@@ -51,7 +51,7 @@ $(document).ready(function() {
 				$('.ui-jqdialog-titlebar-close').click();
 			}catch(e){}
 		},
-		colNames: ["序号", "用户", "币种类型", "变动类型", "变动数量", "变动数量", "来源", "时间"],
+		colNames: ["序号", "用户", "币种类型", "变动类型", "变动数量", "剩余数量", "来源", "时间"],
 		colModel: [
 			{name:"log_id",index: "log_id",width: 60,sorttype: "int",editable:false,align: "center",search: true,hidden:true},
 			{name:"user_id",index:"user_id",align: "center",editable:false,width: 90,

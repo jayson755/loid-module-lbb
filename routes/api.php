@@ -51,10 +51,10 @@ Route::group(['prefix'=>'financial', 'middleware'=>[\Illuminate\Session\Middlewa
 Route::group(['prefix'=>'my', 'middleware'=>[\Illuminate\Session\Middleware\StartSession::class, \Loid\Module\Lbb\Middleware\Authentication::class]], function () {
     
     //修改密码
-    Route::post('change/password.html', Loid\Module\Lbb\Api\My::class . '@changePassowrd');
+    Route::post('change/password.html', Loid\Module\Lbb\Api\My::class . '@changePassword');
     
     //修改支付密码
-    Route::post('change/paypassword.html', Loid\Module\Lbb\Api\My::class . '@changePayPassowrd');
+    Route::post('change/paypassword.html', Loid\Module\Lbb\Api\My::class . '@changePayPassword');
     
     /* 我的理财产品 */
     Route::post('financial.html', Loid\Module\Lbb\Api\My::class . '@financial');

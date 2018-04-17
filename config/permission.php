@@ -20,6 +20,8 @@ return [
             'label' => 'Lbb管理',
             'icon'  => 'fa-file',
             'menu'  => array(
+                array('label' => '业务设置','display'=>true, 'alias' => 'lbb.business.set', 'method' => 'get'),
+                
                 array('label' => '用户管理','display'=>true, 'alias' => 'lbb.user', 'method' => 'get'),
                 
                 array('label' => '仓库管理','display'=>true, 'alias' => 'lbb.store', 'method' => 'get'),

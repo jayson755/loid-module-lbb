@@ -79,7 +79,7 @@ $(document).ready(function() {
 				unformat:function(cellvalue, options){
 					return arrUnformat(cellvalue, limitJson, 'single');
 				},
-				width: 90,search: true},
+				width: 90,search: false},
 			
 			
             {name:"financial_status",index:"financial_status",align: "center",editable:true,edittype:'custom',editrules:{edithidden:true,required:true,minValue:0},
@@ -93,15 +93,15 @@ $(document).ready(function() {
 				unformat:function(cellvalue, options){
 					return arrUnformat(cellvalue, statusJson, 'single');
 				},
-				width: 90,search: true},
+				width: 90,search: true,stype:'select',searchoptions:{sopt:["eq"],value:getArrVal(statusJson, 'single')}},
 			
-			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true},
+			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: false},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,
         pgbuttons:true,
 		hidegrid: false
-	}).navGrid('#pager_list_2', {edit: true, add: true, del: false, search:false,searchtext:''},{
+	}).navGrid('#pager_list_2', {edit: true, add: true, del: false, search:true,searchtext:''},{
 		editCaption : "修改",
 		top:50,
 		left:($(document).innerWidth() - 400) / 5 * 2,

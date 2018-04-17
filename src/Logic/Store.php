@@ -6,11 +6,15 @@ use Loid\Module\Lbb\Model\StoreRecharge;
 use Loid\Module\Lbb\Model\Store as StoreModel;
 use Loid\Module\Lbb\Model\Category as CategoryModel;
 use Loid\Module\Lbb\Model\LbbUser as LbbUserModel;
+use Loid\Module\Lbb\Model\BusinessSet as BusinessSetModel;
 use Illuminate\Http\Request;
 use Validator;
 use DB;
+use Log;
 
 class Store{
+    
+    private $minRechargeNum = 0.01;
     
     /**
      * 获取标签分类
@@ -89,6 +93,10 @@ class Store{
         $category = CategoryModel::where('category_id', $params['store_category'])->where('category_status', 'on')->first();
         if (empty($category)) {
             throw new \Exception('该分类(币种)已下线，不能充值');
+        }
+        
+        if ((double)$params['recharge_num'] < $this->minRechargeNum) {
+            throw new \Exception('充值数量少于最小充值数量'.$this->minRechargeNum.'，不能充值');
         }
         
         $store = $this->getStoreByCategory2User($user->lbb_user_id, (int)$params['store_category']);
@@ -238,11 +246,17 @@ class Store{
     public function promoteIncome(StoreModel $originStore, string $store_num, string $type){
         $user_id = $originStore->user_id;
         $level = 0;
-        foreach (config("business.promote.proportion") as $proportion) {
+        $promote = (new BusinessSetModel)->getBusiness('promote');
+        foreach ($promote['proportion'] as $proportion) {
             $level ++;
             $user_id = LbbUserModel::where('lbb_user_id', $user_id)->value('lbb_user_origin');
             if (empty($user_id)) break;
-            $this->userPromoteIncome($user_id, $originStore, $store_num, $level, $type);
+            $rate = bcdiv($proportion, 100, 6);
+            if ($rate <= 0) {
+                Log::emergency("推广收益换算时，{$level}代推广利息小于等于0");
+                continue;
+            }
+            $this->userPromoteIncome($user_id, $originStore, $store_num, $level, $rate, $type . '_' . $level);
         }
     }
     
@@ -255,13 +269,15 @@ class Store{
      *  @param string $type 推广收益类型
      * 
      */
-    private function userPromoteIncome(int $user_id, StoreModel $originStore, string $store_num, int $level, string $type){
+    private function userPromoteIncome(int $user_id, StoreModel $originStore, string $store_num, int $level, string $rate, string $type){
         if (!in_array($level, [1, 2, 3])) return;
         if ($store_num <= 0) return;
         
         $store = $this->getStoreByCategory2User($user_id, $originStore->store_category);
+        
         //推广收入
-        $promoteIncome = bcmul(bcdiv($store_num, 100, 6), config("business.promote.proportion.level_{$level}"), 6);
+        $promoteIncome = bcmul($store_num, $rate, 6);
+        
         //推广收益入库
         $store->store_num = bcadd($store->store_num, $promoteIncome, 6);
         

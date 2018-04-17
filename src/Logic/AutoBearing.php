@@ -4,6 +4,7 @@ namespace Loid\Module\Lbb\Logic;
 use Loid\Module\Lbb\Model\UserFinancial as UserFinancialModel;
 use Loid\Module\Lbb\Model\Store as StoreModel;
 use Loid\Module\Lbb\Logic\Store as StoreLogic;
+use Loid\Module\Lbb\Model\BusinessSet as BusinessSetModel;
 use DB;
 use Log;
 
@@ -23,7 +24,18 @@ class AutoBearing{
     public function balance(){
         $time = date('Y-m-d H:i:s', strtotime('-3 day'));
         DB::table('lbb_store_change')->where('created_at', '<', $time)->delete();
-        foreach (StoreModel::where('user_id', 4)->get() as $val) {
+        $balance_rate = (new BusinessSetModel)->getBusiness('balance_rate');
+        if (doubleval($balance_rate) <= 0) {
+            Log::emergency('余额计息失败，余额利息小于等于0');
+            return false;
+        }
+        foreach (StoreModel::get() as $val) {
+            //判断上次余额计息时间，如果当天计息一生效，则不再计息
+            
+            if (DB::table('lbb_store_log')->where('user_id', $val->user_id)->where('store_id', $val->store_id)->where('flag', 'interest')->where('created_at', '>', date('Y-m-d'))->count()) {
+                Log::emergency('仓库ID【' . $val->store_id . '】' . date('Y-m-d') . '日余额计息已完成，一天只能计息一次');
+                //continue;
+            }
             try {
                 DB::beginTransaction();
                 //获取该分类最近三天的最低金额
@@ -35,7 +47,7 @@ class AutoBearing{
                 $minNum = $minNum ?? $val->store_num;
                 if ($minNum > 0) {
                     //利息
-                    $interest = bcmul($minNum, config('business.balance_rate') ,6);
+                    $interest = bcmul($minNum, bcdiv($balance_rate, 100, 6), 6);
                     $json = $val->toJson();
                     $val->store_num = bcadd($val->store_num, $interest, 6);
                     $val->save();
@@ -47,7 +59,7 @@ class AutoBearing{
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::emergency('余额计息失败：store_id='. $val->store_id . '；原因：' . $e->getMessage());
+                Log::error('余额计息失败：store_id='. $val->store_id . '；原因：' . $e->getMessage());
             }
         }
     }
@@ -56,7 +68,7 @@ class AutoBearing{
      * 处理定存宝到期计息
      */
     private function financial(){
-        while($userFinancial = UserFinancialModel::where('financial_status', 'on')->first()){
+        while($userFinancial = UserFinancialModel::where('closed_date', '<', date('Y-m-d H:i:s'))->where('financial_status', 'on')->first()){
             try {
                 DB::beginTransaction();
                 $userFinancial->financial_status = 'off';
@@ -74,7 +86,7 @@ class AutoBearing{
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::emergency('定存宝到期计息失败：id='. $userFinancial->id . '；原因：' . $e->getMessage());
+                Log::error('定存宝到期计息失败：id='. $userFinancial->id . '；原因：' . $e->getMessage());
             }
         }
     }

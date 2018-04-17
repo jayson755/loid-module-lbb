@@ -50,7 +50,7 @@ $(document).ready(function() {
 				$('.ui-jqdialog-titlebar-close').click();
 			}catch(e){}
 		},
-		colNames: ["序号", "帐号", "预留手机号", "推广来源", "密码", "创建时间"],
+		colNames: ["序号", "帐号", "预留手机号", "推广来源", "密码", "支付密码", "创建时间"],
 		colModel: [
 			{name:"lbb_user_id",index: "lbb_user_id",width: 60,sorttype: "int",editable:true,align: "center",search: true,hidden:true},
 			
@@ -58,9 +58,11 @@ $(document).ready(function() {
 			
 			{name:"lbb_user_mobile",index:"lbb_user_mobile",align: "center",editable:true,edittype:'text',editrules:{edithidden:true,required:true},width: 90,search: true},
             
-            {name:"origin",index:"lbb_user_origin",align: "center",editable:true,width: 90,search: true},
+            {name:"origin",index:"lbb_user_origin",align: "center",editable:false,width: 90,search: true},
             
 			{name:"lbb_user_pwd",index:"lbb_user_pwd",align: "center",editable:true,edittype:'password',editrules:{edithidden:true},width: 90,search: false, hidden:true},
+			
+			{name:"lbb_user_paypwd",index:"lbb_user_paypwd",align: "center",editable:true,edittype:'password',editrules:{edithidden:true},width: 90,search: false, hidden:true},
 			
 			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true},
 		],
@@ -68,7 +70,7 @@ $(document).ready(function() {
 		viewrecords: true,
         pgbuttons:true,
 		hidegrid: false
-	}).navGrid('#pager_list_2', {edit: false, add: false, del: false, search:false,searchtext:''},{
+	}).navGrid('#pager_list_2', {edit: true, add: false, del: false, search:false,searchtext:''},{
 		editCaption : "修改",
 		top:50,
 		left:($(document).innerWidth() - 400) / 5 * 2,
@@ -79,6 +81,7 @@ $(document).ready(function() {
 		afterShowForm : function(form) {
             $("#lbb_user_account").attr('disabled', true);
 			$("#lbb_user_pwd").attr('placeholder', '不修改密码不输入');
+			$("#lbb_user_paypwd").attr('placeholder', '不修改支付密码不输入');
 		},  
 		afterSubmit: function(response, postdata) {
 			if (response.responseJSON.code == 0) {
