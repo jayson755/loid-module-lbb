@@ -91,7 +91,7 @@ class My extends Controller{
     public function promoteLinks(Request $request){
         try {
             $user = (new UserLogic)->getUser($request->user->lbb_user_account);
-            $url = route('api.register') . '?origin='. $user->lbb_user_account;
+            $url = '/api/register.html' . '?origin='. $user->lbb_user_account;
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
         }

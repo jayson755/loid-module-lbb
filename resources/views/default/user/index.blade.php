@@ -54,23 +54,23 @@ $(document).ready(function() {
 		colModel: [
 			{name:"lbb_user_id",index: "lbb_user_id",width: 60,sorttype: "int",editable:true,align: "center",search: true,hidden:true},
 			
-			{name:"lbb_user_account",index:"lbb_user_account",align: "center",editable:true,width: 90,search: true},
+			{name:"lbb_user_account",index:"lbb_user_account",align: "center",editable:true,width: 90,search: true, searchoptions:{sopt:["eq","in"]}},
 			
-			{name:"lbb_user_mobile",index:"lbb_user_mobile",align: "center",editable:true,edittype:'text',editrules:{edithidden:true,required:true},width: 90,search: true},
+			{name:"lbb_user_mobile",index:"lbb_user_mobile",align: "center",editable:true,edittype:'text',editrules:{edithidden:true,required:true},width: 90,search: true, searchoptions:{sopt:["eq","in"]}},
             
-            {name:"origin",index:"lbb_user_origin",align: "center",editable:false,width: 90,search: true},
+            {name:"origin",index:"lbb_user_origin",align: "center",editable:false,width: 90,search: false},
             
 			{name:"lbb_user_pwd",index:"lbb_user_pwd",align: "center",editable:true,edittype:'password',editrules:{edithidden:true},width: 90,search: false, hidden:true},
 			
 			{name:"lbb_user_paypwd",index:"lbb_user_paypwd",align: "center",editable:true,edittype:'password',editrules:{edithidden:true},width: 90,search: false, hidden:true},
 			
-			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: true},
+			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: false,stype:'text',searchoptions:{sopt:["eq","ne",'lt','le','gt','ge'],dataInit:dataInit}},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,
         pgbuttons:true,
 		hidegrid: false
-	}).navGrid('#pager_list_2', {edit: true, add: false, del: false, search:false,searchtext:''},{
+	}).navGrid('#pager_list_2', {edit: true, add: false, del: false, search:true,searchtext:''},{
 		editCaption : "修改",
 		top:50,
 		left:($(document).innerWidth() - 400) / 5 * 2,
@@ -91,6 +91,12 @@ $(document).ready(function() {
 				return [true, '', ''];
 			}
 		}
+	},{},{},{
+		caption : "搜索",
+		top:50,
+		left:($(document).innerWidth() - 400) / 5 * 2,
+		width:500,
+		multipleSearch:true
 	}).navButtonAdd('#pager_list_2', {
 		caption:"",
 		buttonicon:"fa fa-user-times",
