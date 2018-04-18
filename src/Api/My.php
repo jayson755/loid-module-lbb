@@ -36,9 +36,9 @@ class My extends Controller{
             if (empty($userFinancial)) {
                 throw new \Exception('不存在');
             }
-            $userFinancial['effective_date'] = date('Y.m.d', strtotime($userFinancial['effective_date']));
-            $userFinancial['closed_date'] = date('Y.m.d', strtotime($userFinancial['closed_date']));
-            $userFinancial['created_at'] = date('Y.m.d', strtotime($userFinancial['created_at']));
+            $userFinancial['effective_date_show'] = date('Y.m.d', strtotime($userFinancial['effective_date']));
+            $userFinancial['closed_date_show'] = date('Y.m.d', strtotime($userFinancial['closed_date']));
+            $userFinancial['created_at_show'] = date('Y.m.d', strtotime($userFinancial['created_at']));
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
         }
