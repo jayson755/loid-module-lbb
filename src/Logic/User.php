@@ -53,16 +53,13 @@ class User{
         if ($validator->fails()) {
             throw new \Exception($validator->errors()->first());
         }
-        if (base64_decode($params['user_origin'] ?? '')) {
-            $origin_user_id = LbbUserModel::where('lbb_user_uuid', base64_decode($params['user_origin']))->value('lbb_user_id');
-        }
         $model = new LbbUserModel;
         $model->lbb_user_account = $params['user_account'];
         $model->lbb_user_name = $params['user_name'] ?? '';
         $model->lbb_user_mobile = $params['user_mobile'];
         $model->lbb_user_pwd = $this->setPassword($params['user_pwd']);
         $model->lbb_user_paypwd = $this->setPassword($params['user_paypwd']);
-        $model->lbb_user_origin = $origin_user_id ?? 0;
+        $model->lbb_user_origin = empty($params['user_origin']) ? 0 : $params['user_origin'];
         $model->lbb_user_uuid = Uuid::uuid1()->toString();
         $model->save();
         return $model->lbb_user_id;
