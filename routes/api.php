@@ -59,6 +59,9 @@ Route::group(['prefix'=>'my', 'middleware'=>[\Illuminate\Session\Middleware\Star
     /* 我的理财产品 */
     Route::post('financial.html', Loid\Module\Lbb\Api\My::class . '@financial');
     
+    /* 我的理财产品详情 */
+    Route::post('financial/{id}.html', Loid\Module\Lbb\Api\My::class . '@financialDetial');
+    
     /*我的库存*/
     Route::post('store.html', Loid\Module\Lbb\Api\My::class . '@store');
     /*我的推广连接*/

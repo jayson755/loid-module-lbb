@@ -76,6 +76,13 @@ class Financial{
     }
     
     /**
+     * 获取用户指定理财产品
+     */
+    public function getFinancialByID(int $id){
+        return UserFinancialModel::find($id);
+    }
+    
+    /**
      * 购买理财产品
      */
     public function buyFinancial(LbbUser $user, array $params) :void {
@@ -108,7 +115,8 @@ class Financial{
             $model->financial_status = 'on';
             $model->effective_date = date('Y-m-d H:i:s');
             $model->closed_date = date('Y-m-d H:i:s', time() + $business['date'] * 86400);
-            $model->financial_num = bcmul($params['num'], bcdiv($business['rate'], 100, 6), 6);
+            $model->day_earnings = bcmul($params['num'], bcdiv($business['rate'], 100, 6), 6); //预计天收益
+            $model->financial_num = bcmul($model->day_earnings, $model->limit_date, 6); //预计总共收益
             $model->save();
             
             //减库存

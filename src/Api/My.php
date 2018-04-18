@@ -28,6 +28,24 @@ class My extends Controller{
     }
     
     /**
+     * 我的理财产品详情
+     */
+    public function financialDetial(Request $request, int $id){
+        try {
+            $userFinancial = (new FinancialLogic)->getFinancialByID($id)->toArray();
+            if (empty($userFinancial)) {
+                throw new \Exception('不存在');
+            }
+            $userFinancial['effective_date'] = date('Y.m.d', strtotime($userFinancial['effective_date']));
+            $userFinancial['closed_date'] = date('Y.m.d', strtotime($userFinancial['closed_date']));
+            $userFinancial['created_at'] = date('Y.m.d', strtotime($userFinancial['created_at']));
+        } catch (\Exception $e) {
+            return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
+        }
+        return response()->json(['status'=>1,'msg'=>'操作成功', 'data'=>$userFinancial]);
+    }
+    
+    /**
      * 获取我的库存
      */
     public function store(Request $request){
