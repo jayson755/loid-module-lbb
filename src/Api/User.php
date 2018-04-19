@@ -31,11 +31,11 @@ class User extends Controller{
                 throw new \Exception('账号或密码错误');
             }
             $user = $userLogic->getUser($request->input('user_account'));
-            $request->session()->put('lbb_user', $user);
+            $token = $user->lbb_user_pwd;
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
         }
-        return response()->json(['status'=>1,'msg'=>'验证成功']);
+        return response()->json(['status'=>1,'msg'=>'验证成功', 'token'=>$token]);
     }
     
     /**

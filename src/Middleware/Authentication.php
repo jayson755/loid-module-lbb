@@ -14,13 +14,20 @@ class Authentication{
      * @return mixed
      */
     public function handle($request, Closure $next){
-        if (! $request->session()->has('lbb_user')) {
+        if (false === $request->user = $this->checkUser($request)) {
             return response()->json(['status'=>0,'msg'=>'请先登录']);
-        } else {
-            $request->user = $request->session()->get('lbb_user');
         }
         return $next($request);
     }
     
-    
+    private function checkUser($request){
+        if (empty($request->header('token'))) {
+            return false;
+        }
+        $user = \Loid\Module\Lbb\Model\LbbUser::where('lbb_user_pwd', $request->header('token'))->first();
+        if (empty($user)) {
+            return false;
+        }
+        return $user;
+    }
 }
