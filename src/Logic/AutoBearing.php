@@ -34,7 +34,7 @@ class AutoBearing{
             
             if (DB::table('lbb_store_log')->where('user_id', $val->user_id)->where('store_id', $val->store_id)->where('flag', 'interest')->where('created_at', '>', date('Y-m-d'))->count()) {
                 Log::emergency('仓库ID【' . $val->store_id . '】' . date('Y-m-d') . '日余额计息已完成，一天只能计息一次');
-                //continue;
+                continue;
             }
             try {
                 DB::beginTransaction();
