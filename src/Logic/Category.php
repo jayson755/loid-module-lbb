@@ -56,9 +56,9 @@ class Category{
             $field_alias = ['category_id', 'category_name'];
         }
         if (empty($type)) {
-            return CategoryModel::select($field_alias)->get();
+            return CategoryModel::select($field_alias)->orderBy('category_id', 'desc')->get();
         } else {
-            return CategoryModel::where('category_status', 'on')->select($field_alias)->get();
+            return CategoryModel::where('category_status', 'on')->select($field_alias)->orderBy('category_id', 'desc')->get();
         }
     }
     

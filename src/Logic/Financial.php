@@ -65,14 +65,14 @@ class Financial{
      * 获取理财产品
      */
     public function getFinancial(){
-        return FinancialModel::where('financial_status', 'on')->select('financial_id','financial_category','financial_limit')->get();
+        return FinancialModel::where('financial_status', 'on')->select('financial_id','financial_category','financial_limit')->orderBy('financial_id', 'desc')->get();
     }
     
     /**
      * 获取用户理财产品
      */
     public function getFinancialByUser(int $user_id){
-        return UserFinancialModel::where('user_id', $user_id)->select('id','category_name','limit_date','financial_status','effective_date')->get();
+        return UserFinancialModel::where('user_id', $user_id)->select('id','category_name','limit_date','financial_status','effective_date')->orderBy('id', 'desc')->get();
     }
     
     /**

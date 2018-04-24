@@ -28,9 +28,9 @@ class Store{
      */
     public function getStoreByUser(LbbUserModel $user, array $fields = []){
         if ($fields) {
-            return StoreModel::where('user_id', $user->lbb_user_id)->select($fields)->get();
+            return StoreModel::where('user_id', $user->lbb_user_id)->select($fields)->orderBy('id', 'desc')->get();
         } else {
-            return StoreModel::where('user_id', $user->lbb_user_id)->get();
+            return StoreModel::where('user_id', $user->lbb_user_id)->orderBy('id', 'desc')->get();
         }
     }
     

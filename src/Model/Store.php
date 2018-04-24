@@ -81,7 +81,7 @@ class Store extends Model
             $object = $object->where('flag', $type);
         }
         $page = ($page_index >= 1) ? $page_index : 1;
-        $list = $object->offset(($page - 1) * $this->rows)->limit($this->rows)->get();
+        $list = $object->offset(($page - 1) * $this->rows)->limit($this->rows)->orderBy('log_id', 'desc')->get();
         foreach ($list as $val) {
             $val->flag_title = $this->flag[$val->flag];
         }
