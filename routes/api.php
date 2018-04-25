@@ -25,6 +25,16 @@ Route::post('categoryurl/{category}.html', Loid\Module\Lbb\Api\Category::class .
 /*获取理财产品*/
 Route::post('financial.html', Loid\Module\Lbb\Api\Financial::class . '@getlist');
 
+
+Route::group(['prefix'=>'content'], function () {
+    /* 获取公告 */
+    Route::post('notice.html', Loid\Module\Lbb\Api\Content::class . '@notice');
+    /* 获取关于我们 */
+    Route::post('aboutus.html', Loid\Module\Lbb\Api\Content::class . '@aboutus');
+    /* 获取banner */
+    Route::post('banner.html', Loid\Module\Lbb\Api\Content::class . '@banner');
+});    
+
 /* 登录 */
 Route::middleware(\Illuminate\Session\Middleware\StartSession::class)->post('signin.html', Loid\Module\Lbb\Api\User::class . '@signin');
 
@@ -47,6 +57,8 @@ Route::group(['prefix'=>'financial', 'middleware'=>[\Illuminate\Session\Middlewa
     /* 购买理财产品 */
     Route::post('buy.html', Loid\Module\Lbb\Api\Financial::class . '@buy');
 });
+
+
 
 Route::group(['prefix'=>'my', 'middleware'=>[\Illuminate\Session\Middleware\StartSession::class, \Loid\Module\Lbb\Middleware\Authentication::class]], function () {
     

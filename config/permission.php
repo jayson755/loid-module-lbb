@@ -37,6 +37,10 @@ return [
                 array('label' => '理财产品管理','display'=>true, 'alias' => 'lbb.financial', 'method' => 'get'),
                 
                 array('label' => '用户理财管理','display'=>true, 'alias' => 'lbb.user.financial', 'method' => 'get'),
+                
+                array('label' => '内容管理','display'=>true, 'alias' => 'lbb.content.article', 'method' => 'get'),
+                
+                array('label' => 'banner管理','display'=>true, 'alias' => 'lbb.content.banner.set', 'method' => 'get'),
             ),
             
         ],

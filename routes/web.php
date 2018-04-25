@@ -4,6 +4,10 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Middleware\MoudleInit::class]], function () {
     
+    /*banner设置*/
+    Route::get('lbb/content/banner', Loid\Module\Lbb\Controllers\BannerController::class.'@set')->name('lbb.content.banner.set');
+    Route::post('lbb/content/banner/setsave', Loid\Module\Lbb\Controllers\BannerController::class.'@setSave')->name('lbb.content.banner.setsave');
+    
     /*业务设置*/
     Route::get('lbb/business/set', Loid\Module\Lbb\Controllers\BusinessController::class.'@set')->name('lbb.business.set');
     Route::post('lbb/business/setsave', Loid\Module\Lbb\Controllers\BusinessController::class.'@setSave')->name('lbb.business.setsave');
@@ -56,4 +60,11 @@ Route::group(['prefix'=>'manage', 'middleware'=>['web', 'auth', \Loid\Frame\Midd
     Route::get('lbb/user/financial/list/{param?}', function (Request $request, $param = null) {
         return (new \Loid\Module\Lbb\Controllers\UserFinancialController)->getjQGridList($request, $param);
     })->name('lbb.user.financial.list');
+    
+    
+    /*内容管理*/
+    Route::get('lbb/content/article', Loid\Module\Lbb\Controllers\ArticleController::class.'@index')->name('lbb.content.article');
+    Route::get('lbb/content/article/list/{param}', Loid\Module\Lbb\Controllers\ArticleController::class . '@getjQGridList')->name('lbb.content.article.list');
+    Route::match(['get','post'], 'lbb/content/article/modify', Loid\Module\Lbb\Controllers\ArticleController::class . '@modify')->name('lbb.content.article.modify');
+    Route::post('lbb/content/article/del', Loid\Module\Lbb\Controllers\ArticleController::class . '@delete')->name('lbb.content.article.del');
 });

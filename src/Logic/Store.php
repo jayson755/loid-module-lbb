@@ -145,12 +145,11 @@ class Store{
      */
     public function toDoWithdraw(LbbUserModel $user, array $params) : int{
         $validator = Validator::make($params, [
-            'withdraw_url' => 'required|active_url',
+            'withdraw_url' => 'required',
             'withdraw_num' => 'required|numeric|min:1',
             'store_category' => 'required',
         ],[
             'withdraw_url.required' => '收款地址必须',
-            'withdraw_url.active_url' => '收款地址必须为url',
             
             'withdraw_num.required' => '数量必须',
             'withdraw_num.integer' => '数量必须为大于0的数字',
