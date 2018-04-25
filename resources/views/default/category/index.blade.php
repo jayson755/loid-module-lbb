@@ -54,8 +54,8 @@ $(document).ready(function() {
 		colModel: [
 			{name:"category_id",index: "category_id",width: 60,sorttype: "int",editable:true,align: "center",search: false,hidden:true},
 			
-			{name:"category_name",index:"category_name",align: "center",editable:true,width: 90,search: false},
-			{name:"category_url",index:"category_url",align: "center",editable:true,width: 90,search: false},
+			{name:"category_name",index:"category_name",align: "center",editable:true,width: 40,search: false},
+			{name:"category_url",index:"category_url",align: "center",editable:true,search: false},
             
             {name:"category_status",index:"category_status",align: "center",editable:true,edittype:'custom',editrules:{edithidden:true,required:true,minValue:0},
 				editoptions:{
@@ -68,9 +68,9 @@ $(document).ready(function() {
 				unformat:function(cellvalue, options){
 					return arrUnformat(cellvalue, statusJson, 'single');
 				},
-				width: 90, search: true,stype:'select',searchoptions:{sopt:["eq"],value:getArrVal(statusJson, 'single')}},
+				width: 40, search: true,stype:'select',searchoptions:{sopt:["eq"],value:getArrVal(statusJson, 'single')}},
 			
-			{name:"created_at",index:"created_at",align: "center",editable:false,width: 90,search: false},
+			{name:"created_at",index:"created_at",align: "center",editable:false,width: 40,search: false},
 		],
 		pager: "#pager_list_2",
 		viewrecords: true,
