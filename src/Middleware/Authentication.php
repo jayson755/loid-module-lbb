@@ -24,7 +24,7 @@ class Authentication{
         if (empty($request->header('token'))) {
             return false;
         }
-        $user = \Loid\Module\Lbb\Model\LbbUser::where('lbb_user_pwd', $request->header('token'))->first();
+        $user = \Loid\Module\Lbb\Model\LbbUser::where('lbb_user_uuid', $request->header('token'))->first();
         if (empty($user)) {
             return false;
         }
