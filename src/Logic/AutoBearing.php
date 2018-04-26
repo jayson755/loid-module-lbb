@@ -22,8 +22,7 @@ class AutoBearing{
      * 处理余额计息,按三天内最低额计息
      */
     public function balance(){
-        $time = date('Y-m-d H:i:s', strtotime('-3 day'));
-        DB::table('lbb_store_change')->where('created_at', '<', $time)->delete();
+        $time = date('Y-m-d', strtotime('-3 day'));
         $balance_rate = (new BusinessSetModel)->getBusiness('balance_rate');
         if (doubleval($balance_rate) <= 0) {
             Log::emergency('余额计息失败，余额利息小于等于0');
@@ -31,20 +30,28 @@ class AutoBearing{
         }
         foreach (StoreModel::get() as $val) {
             //判断上次余额计息时间，如果当天计息一生效，则不再计息
-            
             if (DB::table('lbb_store_log')->where('user_id', $val->user_id)->where('store_id', $val->store_id)->where('flag', 'interest')->where('created_at', '>', date('Y-m-d'))->count()) {
                 Log::emergency('仓库ID【' . $val->store_id . '】' . date('Y-m-d') . '日余额计息已完成，一天只能计息一次');
                 continue;
             }
             try {
                 DB::beginTransaction();
-                //获取该分类最近三天的最低金额
+                //获取该分类最近三天的最低金额，不能笼统的获取三天内最低，而是获取每天最低，然后做对比，不然不符合
                 $minNum = DB::table('lbb_store_change')
                     ->where('created_at', '>', $time)
                     ->where('user_id', $val->user_id)
                     ->where('store_category', $val->store_category)
                     ->min('last_num');
-                $minNum = $minNum ?? $val->store_num;
+                
+                //获取第三天到以前最进的最近一条数据
+                $lastNum = DB::table('lbb_store_change')
+                    ->where('created_at', '<', date('Y-m-d', strtotime('-2 day'))) //第三天的23：59：59，刚好是第二天
+                    ->where('user_id', $val->user_id)
+                    ->where('store_category', $val->store_category)
+                    ->orderBy('created_at', 'desc')
+                    ->value('last_num');
+                
+                $minNum = strval(min($lastNum ?? 0, $minNum ?? 0));
                 if ($minNum > 0) {
                     //利息
                     $interest = bcmul($minNum, bcdiv($balance_rate, 100, 6), 6);
