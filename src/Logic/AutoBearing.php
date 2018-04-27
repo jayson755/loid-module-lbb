@@ -37,21 +37,20 @@ class AutoBearing{
             try {
                 DB::beginTransaction();
                 //获取该分类最近三天的最低金额，不能笼统的获取三天内最低，而是获取每天最低，然后做对比，不然不符合
-                $minNum = DB::table('lbb_store_change')
+                $minNum = DB::table('lbb_store_log')
                     ->where('created_at', '>', $time)
                     ->where('user_id', $val->user_id)
                     ->where('store_category', $val->store_category)
                     ->min('last_num');
                 
                 //获取第三天到以前最进的最近一条数据
-                $lastNum = DB::table('lbb_store_change')
+                $lastNum = DB::table('lbb_store_log')
                     ->where('created_at', '<', date('Y-m-d', strtotime('-2 day'))) //第三天的23：59：59，刚好是第二天
                     ->where('user_id', $val->user_id)
                     ->where('store_category', $val->store_category)
                     ->orderBy('created_at', 'desc')
                     ->value('last_num');
-                
-                $minNum = strval(min($lastNum ?? 0, $minNum ?? 0));
+                $minNum = strval(min($lastNum ? $lastNum : 0, $minNum ? $minNum : 0));
                 if ($minNum > 0) {
                     //利息
                     $interest = bcmul($minNum, bcdiv($balance_rate, 100, 6), 6);
