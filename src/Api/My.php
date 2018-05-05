@@ -9,7 +9,7 @@ use Loid\Module\Lbb\Logic\Store as StoreLogic;
 use Loid\Module\Lbb\Logic\Category as CategoryLogic;
 use Loid\Module\Lbb\Logic\User as UserLogic;
 use Loid\Module\Lbb\Logic\Financial as FinancialLogic;
-
+use Loid\Module\Lbb\Logic\MobileCode as MobileCodeLogic;
 
 class My extends Controller{
     /**
@@ -127,6 +127,13 @@ class My extends Controller{
      */
     public function changePassword(Request $request){
         try {
+            $code = $request->input('code');
+            if (empty($code)) throw new \Exception('验证码错误');
+            
+            if (true !== (new MobileCodeLogic)->verifyCode($request->user->lbb_user_mobile, 'modify_pwd', $code)) {
+                throw new \Exception('验证码错误');
+            }
+            
             (new UserLogic)->changePassword($request->user->lbb_user_id, (string)$request->input('old'), (string)$request->input('new'), (string)$request->input('confirme'));
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);
@@ -139,6 +146,12 @@ class My extends Controller{
      */
     public function changePayPassword(Request $request){
         try {
+            $code = $request->input('code');
+            if (empty($code)) throw new \Exception('验证码错误');
+            
+            if (true !== (new MobileCodeLogic)->verifyCode($request->user->lbb_user_mobile, 'modify_paypwd', $code)) {
+                throw new \Exception('验证码错误');
+            }
             (new UserLogic)->changePayPassword($request->user->lbb_user_id, (string)$request->input('password'), (string)$request->input('newpaypassword'));
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);

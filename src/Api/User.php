@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use Loid\Module\Lbb\Logic\User as UserLogic;
+use Loid\Module\Lbb\Logic\MobileCode as MobileCodeLogic;
 
 class User extends Controller{
     
@@ -14,6 +15,17 @@ class User extends Controller{
      */
     public function register(Request $request){
         try {
+            
+            $mobile = $request->input('user_mobile');
+            if (11 != strlen($mobile)) throw new \Exception('预留手机号错误');
+            
+            $code = $request->input('code');
+            if (empty($code)) throw new \Exception('验证码错误');
+            
+            if (true !== (new MobileCodeLogic)->verifyCode($mobile, 'signin', $code)) {
+                throw new \Exception('验证码错误');
+            }
+            
             (new UserLogic)->add($request->all());
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>$e->getMessage()]);

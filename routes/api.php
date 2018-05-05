@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 /* 注册 */
 Route::post('register.html', Loid\Module\Lbb\Api\User::class . '@register')->name('api.register');
 
+/* 获取验证码 */
+Route::post('mobilecode.html', Loid\Module\Lbb\Api\MobileCode::class . '@getCode')->name('api.mobilecode');
+
 /*获取业务分类*/
 Route::post('category.html', Loid\Module\Lbb\Api\Category::class . '@getlist');
 

@@ -1,35 +1,14 @@
 <?php
 return [
-    //¶¨´æ±¦ÀûÏ¢
-    'financial_limit' => [
-        '1' => [
-            'index' => 1,
-            'date' => 30,
-            'rate' => 0.004
-        ],
-        '2' => [
-            'index' => 2,
-            'date' => 60,
-            'rate' => 0.006
-        ],
-        '3' => [
-            'index' => 3,
-            'date' => 90,
-            'rate' => 0.008
-        ],
+    //çŸ­ä¿¡éªŒè¯ç é…ç½®
+    'mobile_code' => [
+        'url' => 'http://api.smschn.cn',
+        'user' => URLEncode('lianbaobao'),
+        'key' => 'E647C3AEED715234942B8B4323ED321E',
     ],
-    
-    'balance_rate' => 0.002, //Óà¶îÀûÏ¢
-    
-    /*ÍÆ¹ãÊÕÒæ*/
-    'promote' => [
-        //ÊÇ·ñ¿ªÆô
-        'enable' => true,
-        //±ÈÀý
-        'proportion' => [
-            'level_1' => 15,
-            'level_2' => 10,
-            'level_3' => 5
-        ]
-    ],
+    'code_type' => [
+        'signin' => 'æ³¨å†Œ',
+        'modify_pwd' => 'ä¿®æ”¹å¯†ç ',
+        'modify_paypwd' => 'ä¿®æ”¹æ”¯ä»˜å¯†ç ',
+    ]
 ];
