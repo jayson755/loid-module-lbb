@@ -15,7 +15,7 @@ class Store extends Controller{
      */
     public function withdrawing(Request $request){
         try {
-            if ((new \Loid\Module\Lbb\Logic\User)->verifyPayPassword($request->user, $request->input('pay_pwd'))) {
+            if (!(new \Loid\Module\Lbb\Logic\User)->verifyPayPassword($request->user, $request->input('pay_pwd'))) {
                 throw new \Exception('支付密码错误');
             }
             (new StoreLogic)->toDoWithdraw($request->user, $request->all());
