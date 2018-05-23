@@ -15,7 +15,6 @@ class AutoBearing{
         //这里有个小逻辑，先处理余额计息，再处理定存宝计息，因为余额三天后计息，若有变动则重置时间
         $object = new self;
         $object->balance();
-        $object->financial();
     }
     
     /**
@@ -28,7 +27,7 @@ class AutoBearing{
             Log::emergency('余额计息失败，余额利息小于等于0');
             return false;
         }
-        foreach (StoreModel::get() as $val) {
+        foreach (StoreModel::select('store_id','user_id','store_id')->get() as $val) {
             //判断上次余额计息时间，如果当天计息一生效，则不再计息
             if (DB::table('lbb_store_log')->where('user_id', $val->user_id)->where('store_id', $val->store_id)->where('flag', 'interest')->where('created_at', '>', date('Y-m-d'))->count()) {
                 Log::emergency('仓库ID【' . $val->store_id . '】' . date('Y-m-d') . '日余额计息已完成，一天只能计息一次');
@@ -36,6 +35,8 @@ class AutoBearing{
             }
             try {
                 DB::beginTransaction();
+                //重新获取对象，因为推广利息计算后，数据有变动
+                $val = StoreModel::find($val->store_id);
                 //获取该分类最近三天的最低金额，不能笼统的获取三天内最低，而是获取每天最低，然后做对比，不然不符合
                 $minNum = DB::table('lbb_store_log')
                     ->where('created_at', '>', $time)

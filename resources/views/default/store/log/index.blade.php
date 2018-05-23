@@ -44,7 +44,7 @@ $(document).ready(function() {
 		shrinkToFit: true,
 		rowNum: {{$rows}},
 		rowList: [10, 20, 30],
-        sortname: 'created_at',
+        sortname: 'log_id',
         sortorder: 'desc',
 		loadComplete : function(xhr){ //请求成功事件
 			try{
